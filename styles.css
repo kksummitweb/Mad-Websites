@@ -343,6 +343,13 @@ h1 {
   display: grid;
   gap: 1rem;
   grid-template-columns: 1.25fr 0.75fr;
+}
+
+.about-wrap {
+  align-items: stretch;
+}
+
+.contact-wrap {
   align-items: start;
 }
 
@@ -365,15 +372,17 @@ h1 {
 }
 
 .about-visual {
+  display: flex;
   padding: 1rem;
 }
 
 .about-photo-frame {
-  min-height: 420px;
-  border-radius: 12px;
-  border: 1px dashed rgba(172, 193, 244, 0.35);
+  flex: 1;
+  min-height: 100%;
+  border-radius: 10px;
+  border: 1px solid rgba(160, 184, 240, 0.24);
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(106, 125, 255, 0.15), rgba(56, 213, 255, 0.15));
+  background: rgba(255, 255, 255, 0.03);
 }
 
 .about-photo-frame img {
