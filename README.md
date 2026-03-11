@@ -25,7 +25,7 @@ Then visit `http://localhost:8080`.
 Update these items in `index.html` to match your business:
 
 - Brand name (`Summit Web Studio`)
-- Contact email (`hello@yourstudio.com`)
+- Contact email (`kksummitweb@gmail.com`)
 - Client logos and testimonials
 - Portfolio project descriptions and outcomes
 - Service details and experience metrics
