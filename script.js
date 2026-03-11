@@ -13,7 +13,7 @@ const formMessage = document.getElementById('formMessage');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
 const webAppUrl =
-  'https://script.google.com/macros/s/AKfycbwJ3mNXjDnE-NQOtExGD1P3mDPMi2GlQk35qrAtep9bBLvAyVIC8srkW_zILzZKFOLuoA/exec';
+  'https://script.google.com/macros/s/AKfycbwsBm2DC1hkvUOLQEhbsmz4BQpMlc__v2Jl8QlzcmpPA5ZksrcMzYESAGgNRhFMwgV3LA/exec';
 
 const scrollProgress = document.createElement('div');
 scrollProgress.className = 'scroll-progress';
