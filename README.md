@@ -32,5 +32,5 @@ Update these items in `index.html` to match your business:
 
 ## Notes
 
-- The contact form currently validates on the front end only.
-- To receive real submissions, connect the form to a backend, Formspree, Netlify Forms, or another form service.
+- The contact form validates on the front end and sends submissions to a Google Apps Script web app endpoint.
+- Update the `webAppUrl` constant in `script.js` if you deploy a new Apps Script URL.

@@ -3,9 +3,22 @@ const siteNav = document.querySelector('.site-nav');
 const navLinks = document.querySelectorAll('.site-nav a');
 const sections = document.querySelectorAll('main section[id]');
 const revealItems = document.querySelectorAll('.reveal');
+const magneticTargets = document.querySelectorAll('.btn, .nav-cta');
+const interactiveCards = document.querySelectorAll(
+  '.hero-card, .about-card, .about-visual, .service-card, .why-card, .timeline article, .faq-grid article'
+);
 const yearEl = document.getElementById('year');
 const contactForm = document.getElementById('contactForm');
 const formMessage = document.getElementById('formMessage');
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
+const webAppUrl =
+  'https://script.google.com/macros/s/AKfycbwJ3mNXjDnE-NQOtExGD1P3mDPMi2GlQk35qrAtep9bBLvAyVIC8srkW_zILzZKFOLuoA/exec';
+
+const scrollProgress = document.createElement('div');
+scrollProgress.className = 'scroll-progress';
+scrollProgress.setAttribute('aria-hidden', 'true');
+document.body.append(scrollProgress);
 
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();
@@ -39,6 +52,10 @@ const observer = new IntersectionObserver(
   { threshold: 0.14 }
 );
 
+revealItems.forEach((item, index) => {
+  item.style.setProperty('--reveal-delay', `${index * 55}ms`);
+});
+
 revealItems.forEach((item) => observer.observe(item));
 
 const updateActiveLink = () => {
@@ -57,11 +74,80 @@ const updateActiveLink = () => {
   });
 };
 
+const updateProgress = () => {
+  const scrollTop = window.scrollY;
+  const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
+  scrollProgress.style.setProperty('--progress', `${progress}%`);
+  document.documentElement.style.setProperty('--scroll-depth', `${scrollTop}px`);
+};
+
 window.addEventListener('scroll', updateActiveLink);
+window.addEventListener('scroll', updateProgress, { passive: true });
 updateActiveLink();
+updateProgress();
+
+if (!prefersReducedMotion && hasFinePointer) {
+  magneticTargets.forEach((item) => {
+    item.classList.add('magnetic');
+
+    item.addEventListener('pointermove', (event) => {
+      const rect = item.getBoundingClientRect();
+      const deltaX = event.clientX - (rect.left + rect.width / 2);
+      const deltaY = event.clientY - (rect.top + rect.height / 2);
+
+      item.style.setProperty('--mx', `${deltaX * 0.16}px`);
+      item.style.setProperty('--my', `${deltaY * 0.2}px`);
+    });
+
+    item.addEventListener('pointerleave', () => {
+      item.style.setProperty('--mx', '0px');
+      item.style.setProperty('--my', '0px');
+    });
+  });
+
+  interactiveCards.forEach((card) => {
+    card.classList.add('interactive-card');
+
+    card.addEventListener('pointermove', (event) => {
+      const rect = card.getBoundingClientRect();
+      const x = (event.clientX - rect.left) / rect.width;
+      const y = (event.clientY - rect.top) / rect.height;
+      const rotateY = (x - 0.5) * 8;
+      const rotateX = (0.5 - y) * 8;
+
+      card.style.setProperty('--rx', `${rotateX.toFixed(2)}deg`);
+      card.style.setProperty('--ry', `${rotateY.toFixed(2)}deg`);
+      card.style.setProperty('--lift', '-4px');
+    });
+
+    card.addEventListener('pointerleave', () => {
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+      card.style.setProperty('--lift', '0px');
+    });
+  });
+}
+
+if (!prefersReducedMotion) {
+  magneticTargets.forEach((button) => {
+    button.addEventListener('pointerdown', (event) => {
+      const rect = button.getBoundingClientRect();
+      const ripple = document.createElement('span');
+      ripple.className = 'btn-ripple';
+      ripple.style.left = `${event.clientX - rect.left}px`;
+      ripple.style.top = `${event.clientY - rect.top}px`;
+
+      button.append(ripple);
+      window.setTimeout(() => {
+        ripple.remove();
+      }, 700);
+    });
+  });
+}
 
 if (contactForm && formMessage) {
-  contactForm.addEventListener('submit', (event) => {
+  contactForm.addEventListener('submit', async (event) => {
     event.preventDefault();
 
     const formData = new FormData(contactForm);
@@ -82,8 +168,30 @@ if (contactForm && formMessage) {
       return;
     }
 
-    formMessage.textContent = 'Thanks! Your request is ready. Connect this form to your inbox next.';
-    formMessage.classList.add('success');
-    contactForm.reset();
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Sending...';
+    }
+
+    try {
+      await fetch(webAppUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData,
+      });
+
+      formMessage.textContent = 'Thanks! Your request has been submitted successfully.';
+      formMessage.classList.add('success');
+      contactForm.reset();
+    } catch (_error) {
+      formMessage.textContent = 'Something went wrong. Please try again in a moment.';
+      formMessage.classList.remove('success');
+    } finally {
+      if (submitButton) {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Request Proposal';
+      }
+    }
   });
 }
