@@ -13,7 +13,7 @@ const formMessage = document.getElementById('formMessage');
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const hasFinePointer = window.matchMedia('(pointer: fine)').matches;
 const webAppUrl =
-  'https://script.google.com/macros/s/AKfycbwsBm2DC1hkvUOLQEhbsmz4BQpMlc__v2Jl8QlzcmpPA5ZksrcMzYESAGgNRhFMwgV3LA/exec';
+  'https://script.google.com/macros/s/AKfycbxrOSd04c4SzMXN_6BUHFywyCzEAXd6S25QHCm06bmBg5r77a_mRqXg1PqRsZKt33at3w/exec';
 
 const scrollProgress = document.createElement('div');
 scrollProgress.className = 'scroll-progress';
@@ -175,17 +175,36 @@ if (contactForm && formMessage) {
     }
 
     try {
-      await fetch(webAppUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        body: formData,
+      const payload = new URLSearchParams();
+
+      formData.forEach((value, key) => {
+        payload.append(key, String(value).trim());
       });
+
+      payload.append('submittedAt', new Date().toISOString());
+      payload.append('sourcePage', window.location.href);
+
+      const response = await fetch(webAppUrl, {
+        method: 'POST',
+        mode: 'cors',
+        body: payload,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
+
+      const result = await response.json();
+      if (result.result !== 'success' && !result.ok) {
+        throw new Error(result.message || 'Submission failed');
+      }
 
       formMessage.textContent = 'Thanks! Your request has been submitted successfully.';
       formMessage.classList.add('success');
       contactForm.reset();
     } catch (_error) {
-      formMessage.textContent = 'Something went wrong. Please try again in a moment.';
+      formMessage.textContent =
+        'Submission failed. Confirm your Google Apps Script web app is redeployed with access set to Anyone.';
       formMessage.classList.remove('success');
     } finally {
       if (submitButton) {

@@ -130,13 +130,12 @@ h3 {
   position: sticky;
   top: 0;
   z-index: 1000;
-  background: rgba(9, 14, 31, 0.82);
-  backdrop-filter: blur(12px);
+  background: #000000;
   border-bottom: 1px solid rgba(154, 178, 238, 0.16);
 }
 
 .nav-wrap {
-  min-height: 74px;
+  min-height: 120px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -149,12 +148,10 @@ h3 {
   font-weight: 700;
 }
 
-.brand-dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--primary-2), var(--accent));
-  box-shadow: 0 0 0 5px rgba(56, 213, 255, 0.16);
+.brand-logo {
+  height: 110px;
+  width: auto;
+  display: block;
 }
 
 .site-nav {
