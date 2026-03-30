@@ -135,7 +135,7 @@ h3 {
 }
 
 .nav-wrap {
-  min-height: 120px;
+  min-height: clamp(82px, 9vw, 120px);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -146,10 +146,11 @@ h3 {
   align-items: center;
   gap: 0.62rem;
   font-weight: 700;
+  line-height: 1;
 }
 
 .brand-logo {
-  height: 110px;
+  height: clamp(58px, 8vw, 110px);
   width: auto;
   display: block;
 }
@@ -659,7 +660,7 @@ h1 {
 .floating-cta {
   position: fixed;
   right: 1rem;
-  bottom: 1rem;
+  bottom: calc(0.9rem + env(safe-area-inset-bottom));
   z-index: 900;
   color: #fff;
   font-weight: 700;
@@ -748,22 +749,46 @@ h1 {
 }
 
 @media (max-width: 760px) {
+  .nav-wrap {
+    min-height: 78px;
+  }
+
+  .brand {
+    gap: 0.5rem;
+    font-size: 0.95rem;
+  }
+
+  .brand-logo {
+    height: 58px;
+  }
+
   .menu-toggle {
     display: block;
   }
 
   .site-nav {
     position: absolute;
-    top: 74px;
+    top: 100%;
     left: 0;
     right: 0;
     display: none;
     flex-direction: column;
     align-items: flex-start;
     gap: 0.75rem;
-    padding: 0.95rem 1.1rem;
+    padding: 0.95rem 1.1rem calc(1rem + env(safe-area-inset-bottom));
     background: rgba(9, 14, 31, 0.98);
     border-bottom: 1px solid rgba(161, 184, 239, 0.2);
+  }
+
+  .site-nav a {
+    width: 100%;
+    padding: 0.28rem 0;
+  }
+
+  .site-nav .nav-cta {
+    display: inline-flex;
+    justify-content: center;
+    text-align: center;
   }
 
   .site-nav.open {
@@ -771,7 +796,25 @@ h1 {
   }
 
   .hero {
-    padding-top: 3.4rem;
+    padding-top: 2.5rem;
+    padding-bottom: 2.8rem;
+  }
+
+  .hero-copy h1 {
+    max-width: none;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-actions .btn {
+    width: 100%;
+  }
+
+  .section {
+    padding: 3rem 0;
   }
 
   .hero-grid,
@@ -780,14 +823,22 @@ h1 {
   .why-grid,
   .card-grid,
   .timeline,
-  .faq-grid,
+  .faq-grid {
+    grid-template-columns: 1fr;
+  }
+
   .timeline article:last-child,
   .faq-grid article:last-child {
-    grid-template-columns: 1fr;
+    grid-column: auto;
   }
 
   .about-photo-frame {
     min-height: 260px;
+  }
+
+  .contact-form input,
+  .contact-form textarea {
+    font-size: 16px;
   }
 
   .floating-cta {
@@ -799,6 +850,33 @@ h1 {
   .footer-wrap {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    width: min(var(--container), calc(100% - 1.2rem));
+  }
+
+  .hero {
+    padding-top: 2rem;
+    padding-bottom: 2.4rem;
+  }
+
+  .section {
+    padding: 2.5rem 0;
+  }
+
+  .strip-inner {
+    padding: 0.85rem 0;
+  }
+
+  .about-photo-frame {
+    min-height: 220px;
+  }
+
+  .footer {
+    padding-bottom: calc(1rem + env(safe-area-inset-bottom));
   }
 }
 
