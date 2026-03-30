@@ -173,11 +173,12 @@ h3 {
 }
 
 .nav-cta {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(157, 91, 255, 0.9);
   padding: 0.64rem 0.95rem;
   border-radius: 999px;
-  color: var(--text) !important;
-  background: rgba(255, 255, 255, 0.04);
+  color: #fff !important;
+  background: linear-gradient(135deg, var(--accent), #7a3cff);
+  box-shadow: 0 10px 22px rgba(125, 67, 225, 0.35);
 }
 
 .menu-toggle {
@@ -294,9 +295,10 @@ h1 {
 }
 
 .btn-secondary {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: var(--border);
+  color: #fff;
+  background: linear-gradient(135deg, var(--accent), #7a3cff);
+  border-color: rgba(157, 91, 255, 0.9);
+  box-shadow: 0 10px 22px rgba(125, 67, 225, 0.35);
   padding: 0.76rem 1.2rem;
 }
 
@@ -477,22 +479,10 @@ h1 {
 
 .about-photo-frame img {
   width: 100%;
+  height: 100%;
   flex: 1;
   object-fit: cover;
   display: block;
-}
-
-.about-photo-name {
-  margin: 0;
-  text-align: center;
-  font-family: "Manrope", "Inter", sans-serif;
-  font-size: 1rem;
-  font-weight: 800;
-  letter-spacing: 0.015em;
-  color: var(--text);
-  padding: 0.72rem 0.8rem;
-  border-top: 1px solid rgba(160, 184, 240, 0.24);
-  background: rgba(255, 255, 255, 0.04);
 }
 
 .about-card p {
